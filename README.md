@@ -1,7 +1,7 @@
 # TrustAnalytics
 
 ## Descripción
-Se trata de un proyecto nacido en la Escuala de Negocio **MBIT School** como proyecto final de Master Executive Data Science.
+Se trata de un proyecto nacido en la Escuala de Negocio ** [MBIT School](http://www.mbitschool.com)MBIT** como proyecto final de **Master Executive Data Science**.
 
 Se ha desarrollado una serie de scripts basados en Python, que son capaces de leer los Tweets de un criterio de negocio específico y analuizar el sentimiento de dicho texto mejorando los resultados del API estandar de otros proveedores de servicios API de Análisis Sintáctico.
 
