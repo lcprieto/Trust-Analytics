@@ -16,6 +16,21 @@ Como plataforma y tecnologías, se han usado:
 
 La plataforma está testada bajo SO Linux.
 Se dispone de un fichero descriptivo de los requisitos previos del sistema "Requisitos2.txt"
+
+## ¿Cómo funciona?
+La forma de funcionamiento es en distintas fases y está pensado para que todas sean independientes entre si y destinadas a ser programadas en un CRON de Linux a distintas horas.
+
+#### Fase 1:  python managertimeline.py
+              Es el script Python encargado d ela ingesta de Twitter y volcado a MongoDB. No hace tratamiento alguno de los datos, dado que solo se encarga de la ingesta de los mismos.
+
+#### Fase 2: python ta_ML1.py
+             Este script se encarga de discernir entre los tweets que son relevantes para el negocio de los que no. 
+
+#### Fase 3: python ta_PredictSentinelBusiness.py
+             Este es el script encargado de limpieza de datos y analizar el Sentimiento del Tweet (POSITIVO, NEUTRO o NEGATIVO)
+
+#### Fase 4: Con PowerBI de Microsoft se genera la capa de visualización.			 
+              
    
 ## Equipo
 Por orden alfabético...
