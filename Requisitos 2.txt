@@ -1,0 +1,33 @@
+###### Requerimientos previos
+pip install pymongo --user
+pip install tweepy --user
+pip install configparser --user 
+
+
+
+###### Requerimientos PYMSSQL 
+SI USAMOS FEDORA O REDHAT... 
+yum install freetds freetds-devel unixODBC unixODBC-devel 
+
+SI USAMOS UBUNTU...
+sudo apt-get install python-dev
+sudo apt-get install freetds-dev
+
+###### Requerimientos posteriores
+
+pip install pymssql --user
+
+pip install google-cloud --user
+pip install scikit-learn --user
+pip install nltk --user
+pip install pandas --user
+pip install word2vec --user
+pip install xgboost --user
+export GOOGLE_APPLICATION_CREDENTIALS=<UBICACION SCRIPTS>
+
+ipython
+>>> import nltk
+>>> nltk.download()
+ 
+
+export NLTK_DATA=<UBICACION NLTK DATA>
