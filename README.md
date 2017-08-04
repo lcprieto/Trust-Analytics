@@ -1,7 +1,7 @@
 # TrustAnalytics
 
 ## Descripción
-Se trata de un proyecto nacido en la Escuala de Negocio ** MBIT School ** como proyecto final de Master Executive Data Science.
+Se trata de un proyecto nacido en la Escuala de Negocio *MBIT School* como proyecto final de Master Executive Data Science.
 
 Se ha desarrollado una serie de scripts basados en Python, que son capaces de leer los Tweets de un criterio de negocio específico y analuizar el sentimiento de dicho texto mejorando los resultados del API estandar de otros proveedores de servicios API de Análisis Sintáctico.
 
@@ -20,14 +20,14 @@ Se dispone de un fichero descriptivo de los requisitos previos del sistema "Requ
 ## ¿Cómo funciona?
 La forma de funcionamiento es en distintas fases y está pensado para que todas sean independientes entre si y destinadas a ser programadas en un CRON de Linux a distintas horas.
 
-#### Fase 1:  python managertimeline.py
-              Es el script Python encargado d ela ingesta de Twitter y volcado a MongoDB. No hace tratamiento alguno de los datos, dado que solo se encarga de la ingesta de los mismos.
+#### Fase 1: Es el script Python encargado d ela ingesta de Twitter y volcado a MongoDB. No hace tratamiento alguno de los datos, dado que solo se encarga de la ingesta de los mismos.
+             python managertimeline.py
 
-#### Fase 2: python ta_ML1.py
-             Este script se encarga de discernir entre los tweets que son relevantes para el negocio de los que no. 
+#### Fase 2: Este script se encarga de discernir entre los tweets que son relevantes para el negocio de los que no. 
+             python ta_ML1.py
 
-#### Fase 3: python ta_PredictSentinelBusiness.py
-             Este es el script encargado de limpieza de datos y analizar el Sentimiento del Tweet (POSITIVO, NEUTRO o NEGATIVO)
+#### Fase 3: Este es el script encargado de limpieza de datos y analizar el Sentimiento del Tweet (POSITIVO, NEUTRO o NEGATIVO)
+             python ta_PredictSentinelBusiness.py
 
 #### Fase 4: Con PowerBI de Microsoft se genera la capa de visualización.			 
               
