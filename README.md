@@ -8,8 +8,8 @@ Se ha desarrollado una serie de scripts basados en Python, que son capaces de le
 Como plataforma y tecnologías, se han usado:
    1. Microsoft Azure como base de plataforma
    2. MongoDB como Repositorio para ingesta de datos
-   3. Microsoft Azure Machine Learniing como plataforma de uno de los módulos d emachine Laerning del proyecto (consta de dos)
-   4. Azure SQL Server como respositorio de los datos debidamente tratados y como repsoitorio de visualización
+   3. Microsoft Azure Machine Learniing como plataforma de uno de los módulos de machine Learning del proyecto (consta de dos)
+   4. Azure SQL Server como respositorio de los datos debidamente tratados y como repositorio de visualización
    5. Power BI como solución de visualización.
 
 ## Requisitos
