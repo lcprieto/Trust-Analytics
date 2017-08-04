@@ -17,10 +17,13 @@ Como plataforma y tecnologías, se han usado:
 La plataforma está testada bajo SO Linux.
 Se dispone de un fichero descriptivo de los requisitos previos del sistema "Requisitos2.txt"
    
-##Equipo
+## Equipo
 Por orden alfabético...
 
-Pablo Blanco
-Horacio Fernández
-Cristina Florín 
-Luis Carlos Prieto
+### Pablo Blanco
+
+### Horacio Fernández
+
+### Cristina Florín 
+
+### Luis Carlos Prieto
