@@ -15,7 +15,7 @@ Como plataforma y tecnologías, se han usado:
 ## Requisitos
 
 La plataforma está testada bajo SO Linux.
-Se dispone de un fichero descriptivo de los requisitos previos del sistema "Requisitos2.txt"
+Se dispone de un fichero descriptivo de los requisitos previos del sistema ... [ver Requisitos](https://github.com/lcprieto/Trust-Analytics/blob/master/Requisitos%202.txt)
 
 ## ¿Cómo funciona?
 La forma de funcionamiento es en distintas fases y está pensado para que todas sean independientes entre si y destinadas a ser programadas en un CRON de Linux a distintas horas.
