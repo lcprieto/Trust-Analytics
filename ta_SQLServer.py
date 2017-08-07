@@ -352,22 +352,22 @@ class SQLServer(object):
                
                
                 try:
-                    strSQL = u"INSERT INTO [dbo].[timeline] ([idTweet],[idUsuario], [idUsuarioOriginal], [Fecha], [FechaOriginal], Texto], [Retweet], [OrigenRetweet], [VecesRetweeteado]) VALUES ("
+                    strSQL = u"INSERT INTO [dbo].[timeline] ([idTweet],[idUsuario], [idUsuarioOriginal], [Fecha], [FechaOriginal], [Texto], [Retweet], [OrigenRetweet], [VecesRetweeteado]) VALUES ("
                     strSQL = strSQL + "'" + str(Elemento.m_idTweet) + "',"
                     strSQL = strSQL + "'" + str(Elemento.m_idUsuario) + "',"
                     strSQL = strSQL + "'" + str(Elemento.m_idUsuarioOriginal) + "',"
                     strSQL = strSQL + "'" + str(ts) + "',"
                     strSQL = strSQL + "'" + str(tso) + "',"
                     strSQL = strSQL + "'" + Elemento.m_Texto + "',"
-                    strSQL = strSQL + Elemento.m_reTweet  + ","
+                    strSQL = strSQL + str(Elemento.m_reTweet)  + ","
                     strSQL = strSQL + "'" + Elemento.m_OrigenRetweet + "',"
-                    strSQL = strSQL + "0" + ")"
+                    strSQL = strSQL + "0)"
                     ConsultaSQL = strSQL.encode('iso-8859-1','ignore').decode('utf-8','ignore')
                     self.m_conSQL.cursor().execute(ConsultaSQL)              
                     #self.m_conSQL.commit()
                     self.miLog.Salida(".")
-                except: 
-                        
+                except : 
+                      
                     strSQL = u"UPDATE [dbo].[timeline] SET "
                     strSQL = strSQL + "[Fecha] = '" + str(ts) + "', "
                     strSQL = strSQL + "[Retweet] = " + str(Elemento.m_reTweet) + ", "
