@@ -43,7 +43,7 @@ class MongoDB(object):
         self.miLog.Salida("Conectando con MongoDB en Azure......")
         try:       
             self.miLog.Salida("Conectando...")       
-            self.m_db =  pymongo.MongoClient(self.miConf.m_uri_Mongodb).get_database("<YOUR COLLECTIONZ")
+            self.m_db =  pymongo.MongoClient(self.miConf.m_uri_Mongodb).get_database("ta-mrw")
             self.miLog.Salidaln("MongoDB OK")
         except Exception as e:
             self.miLog.Salidaln (" ERROR Conectando a Mongo Azure- ..." )

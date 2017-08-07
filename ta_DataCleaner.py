@@ -58,6 +58,7 @@ class Tweetero(object):
 class TimeLine(object):
     m_idTweet = ""
     m_idUsuario = ""
+    m_idUsuarioOriginal = ""
     m_Texto = ""
     m_Frases = ""
     m_reTweet = 0
@@ -71,17 +72,21 @@ class TimeLine(object):
     m_AccuracyIBM = 0.0
     m_AccuracyBusiness = 0.0
     m_Fecha = ""
+    m_FechaOriginal = ""
     m_Hashtags = ""
     m_UsuariosMencionados = ""
-    def __init__(self, idTweet, idUsuario, Texto, reTweet, OrigenRetweet, Fecha, Hastags, UsuariosMencionados):
+    
+    def __init__(self, idTweet, idUsuario, idUsuarioOriginal, Texto, reTweet, OrigenRetweet, Fecha, FechaOriginal, Hastags, UsuariosMencionados):
         miLog           = log.Log()
         try:
              self.m_idTweet                 = idTweet
              self.m_idUsuario               = idUsuario
+             self.m_idUsuarioOriginal       = idUsuarioOriginal
              self.m_Texto                   = Texto
              self.m_reTweet                 = reTweet
              self.m_OrigenRetweet           = OrigenRetweet
              self.m_Fecha                   = Fecha
+             self.m_FechaOriginal           = FechaOriginal
              self.m_Hastags                 = Hastags
              self.m_UsuariosMencionados     = UsuariosMencionados          
         except Exception as e:
@@ -151,9 +156,23 @@ class DataCleaner(object):
                     idUsuario               = Tweet['user']['id_str']
                     nickUsuario             = Tweet['user']['screen_name'].replace("'","-")
                     Texto                   = Tweet['text'].replace("'","-")
-                    Retweet                 = 0
-                    OrigenRetweet           = ""
                     Fecha                   = Tweet['created_at']
+                    Retweet                 = Tweet['retweet_count']
+                    
+                    nickUsuarioOriginal     = nickUsuario
+                    OrigenRetweet           = idTweet
+                    FechaOriginal           = Fecha
+                    try:
+                        nickUsuarioOriginal = Tweet['retweeted_status']['user']['screen_name'].replace("'","-")
+                        OrigenRetweet       = Tweet['retweeted_status']['id_str']
+                        FechaOriginal       = Tweet['retweeted_status']['created_at']
+                        
+                    except:
+                        
+                        self.miLog.Salida("")
+                        
+                    
+                        
                     NumTweets               = Tweet['user']['statuses_count']
                     Hashtags                = ""
                     Followers               = Tweet['user']['followers_count']
@@ -162,7 +181,7 @@ class DataCleaner(object):
                     UsuariosMencionados     = ""
                     
                     
-                    ElementoTL  = TimeLine(idTweet,nickUsuario,Texto, Retweet, OrigenRetweet, Fecha, Hashtags, UsuariosMencionados)
+                    ElementoTL  = TimeLine(idTweet,nickUsuario,nickUsuarioOriginal, Texto, Retweet, OrigenRetweet, Fecha, FechaOriginal,Hashtags, UsuariosMencionados)
                     self.m_ListaTimeline.append(ElementoTL)  
                     
                     ElementoT = Tweetero(idUsuario,nickUsuario,Followers, Sigue, Ubicacion, NumTweets)
@@ -197,6 +216,62 @@ class DataCleaner(object):
             self.miLog.Salidaln( "ERROR - Limpiando Tweets en DataCleaner")
             self.miLog.Salidaln(e.args)
             return -1
+
+    def AnalisisTweetsRetweet (self):
+        try:       
+            self.miLog.Salidaln ("Limpiando Tweets...")
+            
+            
+            for Dato in self.m_ListaJSON:
+                try:                  
+                    TweetString = json.dumps(Dato, sort_keys=True, indent=4, default=json_util.default)
+                    Tweet = json.loads(TweetString)
+                    
+        
+                                                
+                    #TWEETS
+                    
+                    idTweet                 = Tweet['id_str']
+                    Retweet                 = Tweet['retweet_count']
+                    nickUsuario             = Tweet['user']['screen_name'].replace("'","-")
+                    Texto                   = Tweet['text'].replace("'","-")
+                    Fecha                   = Tweet['created_at']
+                    Retweet                 = 0
+                    nickUsuarioOriginal     = nickUsuario
+                    OrigenRetweet           = idTweet
+                    FechaOriginal           = Fecha
+                    try:
+                        Retweet             = 1
+                        nickUsuarioOriginal = Tweet['retweeted_status']['user']['screen_name'].replace("'","-")
+                        OrigenRetweet       = Tweet['retweeted_status']['id_str']
+                        FechaOriginal       = Tweet['retweeted_status']['created_at']
+                        self.miLog.Salida("R")
+                    except:
+                        
+                        self.miLog.Salida(".")
+                        
+                        
+                    
+                    Hashtags                = ""
+                    
+                    UsuariosMencionados     = ""
+                    
+                    ElementoTL  = TimeLine(idTweet,nickUsuario,nickUsuarioOriginal, Texto, Retweet, OrigenRetweet, Fecha, FechaOriginal,Hashtags, UsuariosMencionados)
+                    self.m_ListaTimeline.append(ElementoTL)  
+                    
+                    
+                except Exception as e:
+                    self.miLog.Salidaln(e.args)
+                    pass
+            del self.m_ListaJSON
+            self.miLog.Salidaln(" OK")
+            
+        except Exception as e :
+            self.miLog.Salidaln( "ERROR - Limpiando Tweets en DataCleaner")
+            self.miLog.Salidaln(e.args)
+            return -1
+
+
         
     def CargaTimeline (self):
         try:       
@@ -212,15 +287,31 @@ class DataCleaner(object):
                     #TWEETS
                     
                     idTweet                 = Tweet['id_str']
+                    Retweet                 = Tweet['retweet_count']
                     nickUsuario             = Tweet['user']['screen_name'].replace("'","-")
                     Texto                   = Tweet['text'].replace("'","-")
-                    Retweet                 = 0
-                    OrigenRetweet           = ""
                     Fecha                   = Tweet['created_at']
+                    Retweet                 = 0
+                    nickUsuarioOriginal     = nickUsuario
+                    OrigenRetweet           = idTweet
+                    FechaOriginal           = Fecha
+                    try:
+                        Retweet             = 1
+                        nickUsuarioOriginal = Tweet['retweeted_status']['user']['screen_name'].replace("'","-")
+                        OrigenRetweet       = Tweet['retweeted_status']['id_str']
+                        FechaOriginal       = Tweet['retweeted_status']['created_at']
+                        self.miLog.Salida("R")
+                    except:
+                        
+                        self.miLog.Salida(".")
+                        
+                        
+                    
                     Hashtags                = ""
+                    
                     UsuariosMencionados     = ""
                     
-                    ElementoTL = TimeLine(idTweet,nickUsuario,Texto, Retweet, OrigenRetweet, Fecha, Hashtags, UsuariosMencionados)
+                    ElementoTL = TimeLine(idTweet,nickUsuario,nickUsuarioOriginal, Texto, Retweet, OrigenRetweet, Fecha, FechaOriginal,Hashtags, UsuariosMencionados)
                     self.m_ListaTimeline.append(ElementoTL)  
                     self.miLog.Salida (".")
                     
