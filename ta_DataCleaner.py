@@ -163,12 +163,13 @@ class DataCleaner(object):
                     OrigenRetweet           = idTweet
                     FechaOriginal           = Fecha
                     try:
+                        
                         nickUsuarioOriginal = Tweet['retweeted_status']['user']['screen_name'].replace("'","-")
                         OrigenRetweet       = Tweet['retweeted_status']['id_str']
                         FechaOriginal       = Tweet['retweeted_status']['created_at']
-                        
+                        Retweet             = 1
                     except:
-                        
+                        Retweet = 0
                         self.miLog.Salida("")
                         
                     
@@ -241,10 +242,11 @@ class DataCleaner(object):
                     OrigenRetweet           = idTweet
                     FechaOriginal           = Fecha
                     try:
-                        Retweet             = 1
+                        
                         nickUsuarioOriginal = Tweet['retweeted_status']['user']['screen_name'].replace("'","-")
                         OrigenRetweet       = Tweet['retweeted_status']['id_str']
                         FechaOriginal       = Tweet['retweeted_status']['created_at']
+                        Retweet             = 1
                         self.miLog.Salida("R")
                     except:
                         
