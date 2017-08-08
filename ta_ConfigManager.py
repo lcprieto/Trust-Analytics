@@ -2,7 +2,8 @@
 """
 Created on Wed May  3 17:25:53 2017
 
-@author: lcprieto
+@author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 import configparser
@@ -39,9 +40,11 @@ class Configuracion(object):
     m_FicheroML2Training = ""
     m_FicheroML2Test = ""
     m_Palabras = ""
+    m_PalabrasML2 = ""
     m_Emoticonos = ""
     m_UbicacionModelos = ""
-    
+    m_UbicacionWord2Vec = ""
+
     
             
     def __init__(self):
@@ -81,8 +84,10 @@ class Configuracion(object):
             self.m_FicheroML2Training = self.config.get("ML2", "FicheroTraining")
             self.m_FicheroML2Test     = self.config.get("ML2", "FicheroTest")
             self.m_Palabras           = self.config.get("ML2", "Palabras")
+            self.m_PalabrasML2        = self.config.get("ML2", "PalabrasML2")
             self.m_Emoticonos         = self.config.get("ML2", "Emoticonos")
             self.m_UbicacionModelos   = self.config.get("ML2", "UbicacionModelos")
+            self.m_UbicacionWord2Vec   = self.config.get("ML2", "UbicacionWord2Vec")
             
             self.miLog.Salidaln("OK") 
         except ValueError:

@@ -3,6 +3,7 @@
 Created on Mon Jul 17 13:34:39 2017
 
 @author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 import ta_ConfigManager

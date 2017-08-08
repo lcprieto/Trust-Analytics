@@ -2,7 +2,8 @@
 """
 Created on Tue Jan 31 12:16:34 2017
 
-@author: lcpri
+@author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 
@@ -15,11 +16,19 @@ from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
 
+#config = configparser.RawConfigParser()
+#config.read('./sys/config.ini')
+#consumer_key = config.get('TwitterAPIcredentials', 'consumer_key')
+#consumer_secret = config.get('TwitterAPIcredentials', 'consumer_secret')
+#access_key = config.get('TwitterAPIcredentials', 'access_key')
+#access_secret = config.get('TwitterAPIcredentials', 'access_secret')
+            
+#SearchItems = config.get('TwitterSearchItems','SearchItems')
 
-consumer_key = "<YOUR KEY>"
-consumer_secret = "<YOUR KEY>"
-access_key = "<YOUR KEY>"
-access_secret = "<YOUR KEY>"
+consumer_key = "1ek2VjUA81dn2a3Bl8wDolrs3"
+consumer_secret = "J3YEWhzQw2p3JYXfYfrPHAHD9S0swyLh5dRa06TG8pofPqDj2w"
+access_key = "847446734309474307-Sf1juR0NeCyNw10vbuM4a0ayTq45d7T"
+access_secret = "YTZedW1oBZ777bD8zL2VghTVbSkmuBrClLmpw71ejSq5a"
 
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
@@ -31,14 +40,14 @@ def Mostrar(Cabecera,Text):
     except Exception as e:
         print(Cabecera + " : -")
         pass
-uri = "<MONGO DB AZURE URI ADDRESS>"
+uri = "mongodb://ta-mrw-db:CncI8PbsXMJUaCUpkqNWmVygKS55ZsV3YJIjCszEwdwAE4D7UumFtobAOHeYM4rbqFEqrQc1e9ZI1Piz9D6sEA==@ta-mrw-db.documents.azure.com:10250/?ssl=true&ssl_cert_reqs=CERT_NONE"
 client = pymongo.MongoClient(uri)
 
-db = client.get_database("<DATABASE NAME>")
+db = client.get_database("ta-mrw")
        
 InicializacionCamposSentinel = {'SentinelMicrosoft': "NA",'FrasesMicrosoft':" ",'SentinelGoogle': "NA",'FrasesGoogle':" ",'MagnitudeGoogle':" ",'SentinelBusiness': "NA",'FrasesBusiness':" "}
 
-for datajson in tweepy.Cursor(api.search, q="<YOUR FILTER>", lang="<LANGUAJE es,en,...>").items():   
+for datajson in tweepy.Cursor(api.search, q="mrw", lang="es").items():   
     try:
         
 

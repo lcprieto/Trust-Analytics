@@ -3,6 +3,7 @@
 Created on Mon Aug  7 10:26:15 2017
 
 @author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 import log

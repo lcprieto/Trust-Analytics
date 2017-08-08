@@ -3,6 +3,7 @@
 Created on Wed Jul 19 09:55:30 2017
 
 @author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 import urllib.request
@@ -57,7 +58,7 @@ def main():
             body = str.encode(json.dumps(Dato))      
             
             #miLog.Salida("\bW")
-            url = '<URL  WEB SERVICE MACHINE LEARNING MSFT>'
+            url = 'https://europewest.services.azureml.net/subscriptions/561a3040473c45e9bec4ce3b0751236e/services/71a40c7296094c8a8014a6b39187a31e/execute?api-version=2.0&format=swagger'
             api_key = miConf.m_ML1_APIKey
             headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key)}
             

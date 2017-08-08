@@ -3,6 +3,7 @@
 Created on Thu Jul 13 13:49:12 2017
 
 @author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 import log
@@ -58,7 +59,7 @@ def main():
     base_url = 'https://westus.api.cognitive.microsoft.com/'
     # Your account key goes here.
     
-    account_key = '<YOUR KEY>'
+    account_key = '02e7d87d5b704e2cbad6a6c796422fee'
     
     headers = {'Content-Type':'application/json', 'Ocp-Apim-Subscription-Key':account_key}    
     

@@ -3,6 +3,7 @@
 Created on Fri Jul 14 09:23:49 2017
 
 @author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 

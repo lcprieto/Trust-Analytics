@@ -2,7 +2,8 @@
 """
 Created on Fri May 19 12:08:55 2017
 
-@author: lcprieto
+@author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 import tweepy
 import ta_ConfigManager

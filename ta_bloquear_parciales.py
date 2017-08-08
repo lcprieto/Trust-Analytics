@@ -2,7 +2,8 @@
 """
 Created on Fri May 19 11:30:30 2017
 
-@author: lcprieto
+@author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 

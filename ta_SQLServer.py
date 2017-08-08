@@ -4,7 +4,8 @@
 """
 Created on Thu May  4 12:13:44 2017
 
-@author: lcprieto
+@author: Luis Carlos Prieto
+luisc.prieto@gmail.com
 """
 
 
