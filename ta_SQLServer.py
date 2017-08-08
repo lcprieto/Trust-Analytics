@@ -238,7 +238,7 @@ class SQLServer(object):
                     try:
                         ts = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(Elemento.m_Fecha,'%a %b %d %H:%M:%S +0000 %Y'))
                         tso = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(Elemento.m_FechaOriginal,'%a %b %d %H:%M:%S +0000 %Y'))
-                        strSQL = u"INSERT INTO [dbo].[timeline] ([idTweet],[idUsuario], [idUsuarioOriginal], [Fecha], [FechaOriginal], Texto], [Retweet], [OrigenRetweet]) VALUES ("
+                        strSQL = u"INSERT INTO [dbo].[timeline] ([idTweet],[idUsuario], [idUsuarioOriginal], [Fecha], [FechaOriginal], [Texto], [Retweet], [OrigenRetweet]) VALUES ("
                         strSQL = strSQL + "'" + str(Elemento.m_idTweet) + "',"
                         strSQL = strSQL + "'" + str(Elemento.m_idUsuario) + "',"
                         strSQL = strSQL + "'" + str(Elemento.m_idUsuarioOriginal) + "',"
