@@ -88,7 +88,7 @@ class TimeLine(object):
              self.m_OrigenRetweet           = OrigenRetweet
              self.m_Fecha                   = Fecha
              self.m_FechaOriginal           = FechaOriginal
-             self.m_Hastags                 = Hastags
+             self.m_Hashtags                = Hastags
              self.m_UsuariosMencionados     = UsuariosMencionados          
         except Exception as e:
             miLog.Salidaln ("ERROR Creando Twitero..." + e)
@@ -177,6 +177,19 @@ class DataCleaner(object):
                         
                     NumTweets               = Tweet['user']['statuses_count']
                     Hashtags                = ""
+                    i = 0
+                    for Hashtag in Tweet['entities']["hashtags"]:
+                        if (i > 0): 
+                            Hashtags = Hashtags + "|"
+                        Hashtags = Hashtags + Hashtag["text"]
+                        
+                        i = i + 1
+                    for Hashtag in Tweet['entities']["user_mentions"]:
+                        if (i > 0): 
+                            Hashtags = Hashtags + "|"
+                        Hashtags = Hashtags + Hashtag["screen_name"]
+                        i = i + 1
+                    
                     Followers               = Tweet['user']['followers_count']
                     Sigue                   = Tweet['user']['friends_count']
                     Ubicacion               = Tweet['user']['location'].replace("'","-") 
@@ -256,7 +269,17 @@ class DataCleaner(object):
                         
                     
                     Hashtags                = ""
-                    
+                    i = 0
+                    for Hashtag in Tweet['entities']["hashtags"]:
+                        if (i > 0): 
+                            Hashtags = Hashtags + "|"
+                        Hashtags = Hashtags + Hashtag["text"]
+                        i = i + 1
+                    for Hashtag in Tweet['entities']["user_mentions"]:
+                        if (i > 0): 
+                            Hashtags = Hashtags + "|"
+                        Hashtags = Hashtags + Hashtag["screen_name"]
+                        i = i + 1
                     UsuariosMencionados     = ""
                     
                     ElementoTL  = TimeLine(idTweet,nickUsuario,nickUsuarioOriginal, Texto, Retweet, OrigenRetweet, Fecha, FechaOriginal,Hashtags, UsuariosMencionados)
@@ -311,7 +334,18 @@ class DataCleaner(object):
                         
                     
                     Hashtags                = ""
-                    
+                    i = 0
+                    for Hashtag in Tweet['entities']["hashtags"]:
+                        if (i > 0): 
+                            Hashtags = Hashtags + "|"
+                        Hashtags = Hashtags + Hashtag["text"]
+                        
+                        i = i + 1
+                    for Hashtag in Tweet['entities']["user_mentions"]:
+                        if (i > 0): 
+                            Hashtags = Hashtags + "|"
+                        Hashtags = Hashtags + Hashtag["screen_name"]
+                        i = i + 1
                     UsuariosMencionados     = ""
                     
                     ElementoTL = TimeLine(idTweet,nickUsuario,nickUsuarioOriginal, Texto, Retweet, OrigenRetweet, Fecha, FechaOriginal,Hashtags, UsuariosMencionados)
@@ -717,7 +751,7 @@ class DatosTwitter:
         X_train, X_test, y_train, y_test = train_test_split(self.Datos_Modelo.iloc[:, 1:], self.Datos_Modelo.iloc[:, 0],
                                                             train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
-        ModeloClasificador = RandomForestClassifier(random_state=self.seed,n_estimators=500,n_jobs=-1, max_features=120)
+        ModeloClasificador = RandomForestClassifier(random_state=self.seed,n_estimators=10000,n_jobs=-1, max_features=140)
        
             
         Modelo = ModeloClasificador.fit(X_train,y_train)
@@ -752,7 +786,7 @@ class DatosTwitter:
                                                             train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
         
-        ModeloClasificador = svm.SVC(probability=False, kernel="rbf", C=2.8, gamma=.0073)
+        ModeloClasificador = svm.SVC(probability=False, kernel="linear", C=2.8, gamma=.0073)
         
         Modelo = ModeloClasificador.fit(X_train,y_train)
                 
@@ -769,7 +803,11 @@ class DatosTwitter:
                                                             train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
         
-        ModeloClasificador = linear_model.SGDClassifier()
+        ModeloClasificador = linear_model.SGDClassifier(alpha=0.0001, average=False, class_weight=None, epsilon=0.1,
+                                                       eta0=0.0, fit_intercept=True, l1_ratio=0.35,
+                                                       learning_rate='optimal', loss='hinge', n_iter=5, n_jobs=1,
+                                                       penalty='l2', power_t=0.5, random_state=None, shuffle=True,
+                                                       verbose=0, warm_start=False)
         
         Modelo = ModeloClasificador.fit(X_train,y_train)
                 
@@ -786,7 +824,7 @@ class DatosTwitter:
                                                             train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
         
-        ModeloClasificador = MLPClassifier(alpha=1e-5,hidden_layer_sizes=(1000, 500,50,5), random_state=1, max_iter=10000, warm_start=True)
+        ModeloClasificador = MLPClassifier(alpha=1e-5,hidden_layer_sizes=(2030, 500,80,5), random_state=1, max_iter=10000, warm_start=True)
         
         Modelo = ModeloClasificador.fit(X_train,y_train)
                 

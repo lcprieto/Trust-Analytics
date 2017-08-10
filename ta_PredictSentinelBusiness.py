@@ -106,12 +106,12 @@ def main():
         #miLog.Salidaln("RF      :" + Prediccion_RF[i])
         #miLog.Salidaln("NB      :" + Prediccion_NB[i])
         Resultado = 'neutro'
-        if (Prediccion_PE[i] == 'positivo'): Resultado = 'positivo' 
-        if (Prediccion_PE[i] == 'negativo'): Resultado = 'negativo'
-        if (Prediccion_PE[i] == 'neutro'):  
-            if (Prediccion_RF[i] == 'negativo' ): Resultado = 'negativo' 
-            if (Prediccion_RF[i] == 'positivo' ): Resultado = 'positivo'
-            if (Prediccion_RF[i] == 'neutro' ): 
+        if (Prediccion_RF[i] == 'positivo'): Resultado = 'positivo' 
+        if (Prediccion_RF[i] == 'negativo'): Resultado = 'negativo'
+        if (Prediccion_RF[i] == 'neutro'):  
+            if (Prediccion_PE[i] == 'negativo' ): Resultado = 'negativo' 
+            if (Prediccion_PE[i] == 'positivo' ): Resultado = 'positivo'
+            if (Prediccion_PE[i] == 'neutro' ): 
                 if (Prediccion_NB[i] == 'positivo'): Resultado = 'positivo'
                 if (Prediccion_NB[i] == 'negativo' ): Resultado = 'negativo'
                 if (Prediccion_NB[i] == 'neutro' ): 

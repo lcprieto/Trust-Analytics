@@ -44,7 +44,10 @@ class Configuracion(object):
     m_Emoticonos = ""
     m_UbicacionModelos = ""
     m_UbicacionWord2Vec = ""
-
+    
+    # Variables indice
+    m_FiltroBusiness = ""
+    
     
             
     def __init__(self):
@@ -88,6 +91,9 @@ class Configuracion(object):
             self.m_Emoticonos         = self.config.get("ML2", "Emoticonos")
             self.m_UbicacionModelos   = self.config.get("ML2", "UbicacionModelos")
             self.m_UbicacionWord2Vec   = self.config.get("ML2", "UbicacionWord2Vec")
+            
+            # Leyendo Parámetros Indice
+            self.m_FiltroBusiness = self.config.get("Indice", "FiltroBusiness")
             
             self.miLog.Salidaln("OK") 
         except ValueError:

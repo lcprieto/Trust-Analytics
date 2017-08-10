@@ -151,6 +151,8 @@ class SQLServer(object):
             self.miLog.Salidaln(e.args)
             return -1            
 
+            
+
 #------------------------------------------------------------------------------------------------------------------------------
         
     def ListaTweetsSentinelBusiness(self, Lista):
@@ -227,41 +229,9 @@ class SQLServer(object):
         try:
             self.miLog.Salidaln("")
             self.miLog.Salidaln("Regenerando Timeline en SQL Server...")  
-            Elemento = ta_DataCleaner.TimeLine
-            cursor = self.m_conSQL.cursor()
             self.miLog.Salida("Limpiando Tabla de Timeline...")  
             strSQL = "TRUNCATE TABLE [dbo].[timeline]"
-            cursor.execute(strSQL) 
-            self.miLog.Salidaln("OK")  
-            ConsultaSQL = b''
-            for Elemento in ListaTL:
-                try: # Si fallan las dos encodings
-                    try:
-                        ts = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(Elemento.m_Fecha,'%a %b %d %H:%M:%S +0000 %Y'))
-                        tso = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(Elemento.m_FechaOriginal,'%a %b %d %H:%M:%S +0000 %Y'))
-                        strSQL = u"INSERT INTO [dbo].[timeline] ([idTweet],[idUsuario], [idUsuarioOriginal], [Fecha], [FechaOriginal], [Texto], [Retweet], [OrigenRetweet]) VALUES ("
-                        strSQL = strSQL + "'" + str(Elemento.m_idTweet) + "',"
-                        strSQL = strSQL + "'" + str(Elemento.m_idUsuario) + "',"
-                        strSQL = strSQL + "'" + str(Elemento.m_idUsuarioOriginal) + "',"
-                        strSQL = strSQL + "'" + str(ts) + "',"
-                        strSQL = strSQL + "'" + str(tso) + "',"
-                        strSQL = strSQL + "'" + Elemento.m_Texto + "',"
-                        strSQL = strSQL + Elemento.m_reTweet  + ","
-                        strSQL = strSQL + "'" + Elemento.m_OrigenRetweet + "')"
-                        ConsultaSQL = strSQL#.encode('latin-1').decode('utf-8')
-                        cursor.execute(ConsultaSQL)              
-                        self.miLog.Salida(".")  
-                        self.m_conSQL.commit() 
-                    except pymssql.Error as e:
-                        ConsultaSQL = strSQL.encode('unicode-escape')
-                        cursor.execute(ConsultaSQL)   
-                        self.m_conSQL.commit()
-                        self.miLog.Salida("E")                      
-                        continue
-                except: # Si fallan los dos encoding damos error X pero seguimos, así solo perdemos un tweet...
-                    self.miLog.Salida("X")                      
-                    continue
-
+            self.ParcialTimeline(ListaTL)
         except Exception as e: 
             self.miLog.Salidaln("ERROR Volcando a SQL los tweets ")
             self.miLog.Salidaln(strSQL)
@@ -335,6 +305,24 @@ class SQLServer(object):
             self.miLog.Salidaln(e.args)
         
          
+#------------------------------------------------------------------------------------------------------------------------------
+
+    def TieneHashTagBusiness (self, mHashTags):
+        
+        try:
+            ListaHashTags = mHashTags.split("|")
+            
+                    
+            for Elemento in ListaHashTags:
+                if (Elemento == self.miConf.m_FiltroBusiness):
+                    return True
+            return False
+            
+        except Exception as e:
+            self.miLog.Salidaln (" ERROR Extrayendo Hashtags"  )
+            self.miLog.Salidaln(e.args)
+            
+            return False
         
 
 
@@ -353,16 +341,22 @@ class SQLServer(object):
                
                
                 try:
-                    strSQL = u"INSERT INTO [dbo].[timeline] ([idTweet],[idUsuario], [idUsuarioOriginal], [Fecha], [FechaOriginal], [Texto], [Retweet], [OrigenRetweet], [VecesRetweeteado]) VALUES ("
+                    strSQL = u"INSERT INTO [dbo].[timeline] ([idTweet],[idUsuario], [idUsuarioOriginal], [Fecha], [FechaOriginal], [Texto], [HashTags], [Retweet], [OrigenRetweet], [VecesRetweeteado], [TieneHashTagBusiness]) VALUES ("
                     strSQL = strSQL + "'" + str(Elemento.m_idTweet) + "',"
                     strSQL = strSQL + "'" + str(Elemento.m_idUsuario) + "',"
                     strSQL = strSQL + "'" + str(Elemento.m_idUsuarioOriginal) + "',"
                     strSQL = strSQL + "'" + str(ts) + "',"
                     strSQL = strSQL + "'" + str(tso) + "',"
-                    strSQL = strSQL + "'" + Elemento.m_Texto + "',"
+                    strSQL = strSQL + "'" + Elemento.m_Texto + "','"
+                    strSQL = strSQL + "'" + Elemento.m_Hashtags + "',"
                     strSQL = strSQL + str(Elemento.m_reTweet)  + ","
                     strSQL = strSQL + "'" + Elemento.m_OrigenRetweet + "',"
-                    strSQL = strSQL + "0)"
+                    strSQL = strSQL + "0,"
+                    if (self.TieneHashTagBusiness(str(Elemento.m_Hashtags))):
+                        strSQL = strSQL + "1)"
+                    else:
+                        strSQL = strSQL + "0)"
+                    
                     ConsultaSQL = strSQL.encode('iso-8859-1','ignore').decode('utf-8','ignore')
                     self.m_conSQL.cursor().execute(ConsultaSQL)              
                     #self.m_conSQL.commit()
@@ -373,9 +367,15 @@ class SQLServer(object):
                     strSQL = strSQL + "[Fecha] = '" + str(ts) + "', "
                     strSQL = strSQL + "[Retweet] = " + str(Elemento.m_reTweet) + ", "
                     strSQL = strSQL + "[OrigenRetweet] = '" + str(Elemento.m_OrigenRetweet) + "', "
+                    strSQL = strSQL + "[HashTags] = '" + str(Elemento.m_Hashtags) + "', "
                     strSQL = strSQL + "[idUsuarioOriginal] = '" + str(Elemento.m_idUsuarioOriginal) + "', "
                     strSQL = strSQL + "[FechaOriginal] = '" + str(tso) + "', "
-                    strSQL = strSQL + "[VecesRetweeteado] = 0 " 
+                    strSQL = strSQL + "[VecesRetweeteado] = 0, " 
+                    strSQL = strSQL + "[TieneHashTagBusiness] = "
+                    if (self.TieneHashTagBusiness(str(Elemento.m_Hashtags))):
+                        strSQL = strSQL + "1 "
+                    else:
+                        strSQL = strSQL + "0 "
                     strSQL = strSQL + " WHERE [idTweet] = '" + str(Elemento.m_idTweet) + "'"
                     ConsultaSQL = strSQL.encode('iso-8859-1','ignore').decode('utf-8','ignore')
                     
