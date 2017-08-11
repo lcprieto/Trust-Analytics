@@ -17,6 +17,9 @@ import os
 import pandas as pd
 import re as regex
 import nltk
+
+from nltk import SnowballStemmer
+
 import random
 
 from sklearn import svm
@@ -521,7 +524,7 @@ class DatosTwitter:
     def Tokenizar(self, tokenizer=nltk.word_tokenize):
         def tokenize_row(row):
             row["texto_original"] = row["texto"]
-            row["texto"] = tokenizer(row["texto"])
+            row["texto"] = nltk.word_tokenize(row["texto"])
             row["texto_token"] = [] + row["texto"]
             return row
 
@@ -566,14 +569,24 @@ class DatosTwitter:
         if os.path.isfile(self.miConf.m_Palabras):
             self.miLog.Salidaln("Leyendo Palabras...")
             word_df = pd.read_csv(self.miConf.m_Palabras)
-            word_df = word_df[word_df["ocurrencias"] > min_occurrences]
+            word_df = word_df[word_df["idx"] > 0]
             self.Palabras = list(word_df.loc[:, "palabra"])
             return
         
-        words = Counter()
+        words = SnowballStemmer("spanish")
+        
+        
+        word_df = pd.DataFrame()
+        Lista = []
         for idx in self.Datos_Procesados.index:
-            words.update(self.Datos_Procesados.loc[idx, "texto"])
-
+            tokens = nltk.word_tokenize(self.Datos.loc[idx, "texto"])
+            
+            ListaParcial = [words.stem(t) for t in tokens]
+            for Elemento in ListaParcial:
+                Lista.append(Elemento)
+            
+            
+        
         for idx, stop_word in enumerate(stopwords):
             try:
                 
@@ -581,14 +594,12 @@ class DatosTwitter:
                     del words[stop_word]
             except:
                 continue
-
-        word_df = pd.DataFrame(data={"palabra": [k for k, v in words.most_common() if min_occurrences < v < max_occurences],
-                                     "ocurrencias": [v for k, v in words.most_common() if min_occurrences < v < max_occurences]},
-                               columns=["palabra", "ocurrencias"])
+        print(Lista)
+        word_df = pd.DataFrame(Lista)
         
-        word_df.to_csv(self.miConf.m_Palabras, index_label="idx")
+        word_df.to_csv(self.miConf.m_Palabras, index_label="idx,palabra")
         
-        self.Palabras = [k for k, v in words.most_common() if min_occurrences < v < max_occurences]
+        self.Palabras = [k for k,v in Lista if min_occurrences < v < max_occurences]
         
         
     def ConstruirMatrizEntrenamiento (self):
@@ -749,9 +760,9 @@ class DatosTwitter:
     def RandomForest (self):
         
         X_train, X_test, y_train, y_test = train_test_split(self.Datos_Modelo.iloc[:, 1:], self.Datos_Modelo.iloc[:, 0],
-                                                            train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
+                                                            train_size=0.8, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
-        ModeloClasificador = RandomForestClassifier(random_state=self.seed,n_estimators=10000,n_jobs=-1, max_features=140)
+        ModeloClasificador = RandomForestClassifier(class_weight ='balanced', random_state=self.seed,n_estimators=1000,n_jobs=4, criterion='entropy')
        
             
         Modelo = ModeloClasificador.fit(X_train,y_train)
@@ -767,10 +778,10 @@ class DatosTwitter:
         
     def NaiveBayes(self):
         X_train, X_test, y_train, y_test = train_test_split(self.Datos_Modelo.iloc[:, 1:], self.Datos_Modelo.iloc[:, 0],
-                                                            train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
+                                                            train_size=0.8, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
         
-        ModeloClasificador = BernoulliNB()
+        ModeloClasificador = BernoulliNB(alpha=1.0, binarize=0.0, class_prior=None, fit_prior=True)
         
         Modelo = ModeloClasificador.fit(X_train,y_train)
                 
@@ -783,10 +794,10 @@ class DatosTwitter:
         
     def SVM (self):
         X_train, X_test, y_train, y_test = train_test_split(self.Datos_Modelo.iloc[:, 1:], self.Datos_Modelo.iloc[:, 0],
-                                                            train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
+                                                            train_size=0.8, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
         
-        ModeloClasificador = svm.SVC(probability=False, kernel="linear", C=2.8, gamma=.0073)
+        ModeloClasificador = svm.SVC(probability=False, kernel="linear", C=1.8, gamma=.0073)
         
         Modelo = ModeloClasificador.fit(X_train,y_train)
                 
@@ -800,12 +811,12 @@ class DatosTwitter:
         
     def DescensoGradiente (self):
         X_train, X_test, y_train, y_test = train_test_split(self.Datos_Modelo.iloc[:, 1:], self.Datos_Modelo.iloc[:, 0],
-                                                            train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
+                                                            train_size=0.8, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
         
-        ModeloClasificador = linear_model.SGDClassifier(alpha=0.0001, average=False, class_weight=None, epsilon=0.1,
+        ModeloClasificador = linear_model.SGDClassifier(alpha=0.003, average=True, class_weight=None, epsilon=0.1,
                                                        eta0=0.0, fit_intercept=True, l1_ratio=0.35,
-                                                       learning_rate='optimal', loss='hinge', n_iter=5, n_jobs=1,
+                                                       learning_rate='optimal', loss='hinge', n_iter=50, n_jobs=4,
                                                        penalty='l2', power_t=0.5, random_state=None, shuffle=True,
                                                        verbose=0, warm_start=False)
         
@@ -821,10 +832,10 @@ class DatosTwitter:
     
     def Perceptron (self):
         X_train, X_test, y_train, y_test = train_test_split(self.Datos_Modelo.iloc[:, 1:], self.Datos_Modelo.iloc[:, 0],
-                                                            train_size=0.7, stratify=self.Datos_Modelo.iloc[:, 0],
+                                                            train_size=0.8, stratify=self.Datos_Modelo.iloc[:, 0],
                                                             random_state=self.seed)
         
-        ModeloClasificador = MLPClassifier(alpha=1e-5,hidden_layer_sizes=(2030, 500,80,5), random_state=1, max_iter=10000, warm_start=True)
+        ModeloClasificador = MLPClassifier(alpha=1e-5,hidden_layer_sizes=(1000,80 ,5), random_state=1, max_iter=1000, warm_start=True)
         
         Modelo = ModeloClasificador.fit(X_train,y_train)
                 

@@ -106,27 +106,44 @@ def main():
         #miLog.Salidaln("RF      :" + Prediccion_RF[i])
         #miLog.Salidaln("NB      :" + Prediccion_NB[i])
         Resultado = 'neutro'
-        if (Prediccion_RF[i] == 'positivo'): Resultado = 'positivo' 
-        if (Prediccion_RF[i] == 'negativo'): Resultado = 'negativo'
-        if (Prediccion_RF[i] == 'neutro'):  
-            if (Prediccion_PE[i] == 'negativo' ): Resultado = 'negativo' 
-            if (Prediccion_PE[i] == 'positivo' ): Resultado = 'positivo'
-            if (Prediccion_PE[i] == 'neutro' ): 
-                if (Prediccion_NB[i] == 'positivo'): Resultado = 'positivo'
-                if (Prediccion_NB[i] == 'negativo' ): Resultado = 'negativo'
-                if (Prediccion_NB[i] == 'neutro' ): 
-                    if (Prediccion_SD[i] == 'negativo'): Resultado = 'negativo'
-                    if (Prediccion_SD[i] == 'positivo'): Resultado = 'positivo'
-                    if (Prediccion_SD[i] == 'neutro'): 
-                        if (Prediccion_SV[i] == 'negativo'): 
-                            Resultado = 'negativo'
-                        else:
-                            if (Prediccion_SV[i] == 'positivo'): 
-                                Resultado = 'positivo'
-                            else:
-                                Resultado = 'neutro'
+        
+        pos = 0
+        neg = 0
+        neu = 0
+        
+        
+        
+        if (Prediccion_RF[i] == 'positivo'): pos += 1 # 44
+        if (Prediccion_RF[i] == 'neutro'  ): neu += 1 # 70
+        if (Prediccion_RF[i] == 'negativo'): neg += 1 # 70
+        
+        if (Prediccion_PE[i] == 'positivo'): pos += 1 # 10
+        if (Prediccion_PE[i] == 'neutro'  ): neu += 1 # 70           
+        if (Prediccion_PE[i] == 'negativo'): neg += 1 # 70
+                        
+        #if (Prediccion_NB[i] == 'positivo'): pos += 1 # 10
+        #if (Prediccion_NB[i] == 'neutro'  ): neu += 1 # 67 
+        #if (Prediccion_NB[i] == 'negativo'): neg += 1 # 37        
+                    
+        if (Prediccion_SD[i] == 'positivo'): pos += 1 # 37
+        if (Prediccion_SD[i] == 'neutro'  ): neu += 1 # 55
+        if (Prediccion_SD[i] == 'negativo'): neg += 1 # 66
+        
+       
+        if (Prediccion_SV[i] == 'positivo'): pos += 1 # 29
+        if (Prediccion_SV[i] == 'neutro'  ): neu += 1 # 63                
+        if (Prediccion_SV[i] == 'negativo'): neg += 1 # 65
+        
                             
         
+        Valor = max(pos,neu,neg)
+        if (Valor == pos): 
+            Resultado = 'positivo'
+        else:
+            if (Valor == neg): 
+                Resultado = 'negativo'
+            else: 
+                Resultado = 'neutro'
         #miLog.Salidaln("----->  :" + Resultado)
         
         
