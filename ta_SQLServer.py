@@ -347,7 +347,7 @@ class SQLServer(object):
                     strSQL = strSQL + "'" + str(Elemento.m_idUsuarioOriginal) + "',"
                     strSQL = strSQL + "'" + str(ts) + "',"
                     strSQL = strSQL + "'" + str(tso) + "',"
-                    strSQL = strSQL + "'" + Elemento.m_Texto + "','"
+                    strSQL = strSQL + "'" + Elemento.m_Texto + "',"
                     strSQL = strSQL + "'" + Elemento.m_Hashtags + "',"
                     strSQL = strSQL + str(Elemento.m_reTweet)  + ","
                     strSQL = strSQL + "'" + Elemento.m_OrigenRetweet + "',"
