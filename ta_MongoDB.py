@@ -115,8 +115,8 @@ class MongoDB(object):
         try:                 
             i = 0
             for Dato in Lista:
-                i = 1 + 1                         
-                self.m_db.timeline.update_one({'id_str': Dato.m_idTweet},{'$set': {'place': 'OK'}}, upsert=False)
+                i = i + 1                         
+                self.m_db.timeline.update({'id_str': Dato.m_idTweet},{'$set': {'place': 'OK'}}, multi=True, upsert=False)
                 self.miLog.Salida(".")
             self.miLog.Salidaln("")
             self.miLog.Salida ("Marcados " + str(i) + " Tweets no gestionados previamente...")                
@@ -130,12 +130,12 @@ class MongoDB(object):
           
     def BorrarParcial (self, Lista):
         self.miLog.Salidaln("")
-        self.miLog.Salidaln("Borrado de los parcialesde JSON a MongoDB de Azure...")
+        self.miLog.Salidaln("Borrado de los parciales de JSON a MongoDB de Azure...")
         try:                 
             i = 0
             for Dato in Lista:
-                i = 1 + 1                         
-                self.m_db.timeline.update_one({'id_str': Dato.m_idTweet},{'$set': {'place': 'null'}}, upsert=False)
+                i = i + 1                         
+                self.m_db.timeline.update({'id_str': Dato.m_idTweet},{'$set': {'place': 'null'}},multi=True,  upsert=False)
                 self.miLog.Salida(".")
             self.miLog.Salidaln("")
             self.miLog.Salida ("Marcados " + str(i) + " Tweets...")                
@@ -153,8 +153,8 @@ class MongoDB(object):
         try:                 
             i = 0
             for Dato in Lista:
-                i = 1 + 1                         
-                self.m_db.timeline.update_one({'id_str': Dato.m_idTweet},{'$set': {'place': 'OK'}}, upsert=False)
+                i = i + 1                         
+                self.m_db.timeline.update({'id_str': Dato.m_idTweet},{'$set': {'place': 'OK'}}, multi=True, upsert=False)
                 self.miLog.Salida(".")
             self.miLog.Salidaln("")
             self.miLog.Salida ("Marcados " + str(i) + " Tweets...")                

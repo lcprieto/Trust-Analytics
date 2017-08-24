@@ -8,9 +8,6 @@ luisc.prieto@gmail.com
 
 
 
-
-import gensim
-
 import log
 import ta_SQLServer
 import ta_DataCleaner
@@ -90,68 +87,70 @@ def main():
     Prediccion_PE = pd.DataFrame
     
     
-    
-    Prediccion_RF = m_DatosTwitter.BusinessRandomForest()    
-    Prediccion_NB = m_DatosTwitter.BusinessNaiveBayes()
-    Prediccion_SV = m_DatosTwitter.BusinessSVM()
-    Prediccion_SD = m_DatosTwitter.BusinesDescensoGradiente()
-    Prediccion_PE = m_DatosTwitter.BusinesPerceptron()
+    try:
+        Prediccion_RF = m_DatosTwitter.BusinessRandomForest()    
+        Prediccion_NB = m_DatosTwitter.BusinessNaiveBayes()
+        Prediccion_SV = m_DatosTwitter.BusinessSVM()
+        Prediccion_SD = m_DatosTwitter.BusinesDescensoGradiente()
+        Prediccion_PE = m_DatosTwitter.BusinesPerceptron()
+            
         
-    
-    Tamano = Prediccion_RF.size
-    for i in range(0, Tamano):
-        #miLog.Salidaln("--------------------------------")
-        #miLog.Salidaln("idTweet : " + m_DatosTwitter.Datos_Procesados.loc[i, "idtweet"])
-        #miLog.Salidaln("Texto   : " + m_DatosTwitter.Datos_Procesados.loc[i, "texto_original"])
-        #miLog.Salidaln("RF      :" + Prediccion_RF[i])
-        #miLog.Salidaln("NB      :" + Prediccion_NB[i])
-        Resultado = 'neutro'
-        
-        pos = 0
-        neg = 0
-        neu = 0
-        
-        
-        
-        if (Prediccion_RF[i] == 'positivo'): pos += 1 # 44
-        if (Prediccion_RF[i] == 'neutro'  ): neu += 1 # 70
-        if (Prediccion_RF[i] == 'negativo'): neg += 1 # 70
-        
-        if (Prediccion_PE[i] == 'positivo'): pos += 1 # 10
-        if (Prediccion_PE[i] == 'neutro'  ): neu += 1 # 70           
-        if (Prediccion_PE[i] == 'negativo'): neg += 1 # 70
-                        
-        #if (Prediccion_NB[i] == 'positivo'): pos += 1 # 10
-        #if (Prediccion_NB[i] == 'neutro'  ): neu += 1 # 67 
-        #if (Prediccion_NB[i] == 'negativo'): neg += 1 # 37        
-                    
-        if (Prediccion_SD[i] == 'positivo'): pos += 1 # 37
-        if (Prediccion_SD[i] == 'neutro'  ): neu += 1 # 55
-        if (Prediccion_SD[i] == 'negativo'): neg += 1 # 66
-        
-       
-        if (Prediccion_SV[i] == 'positivo'): pos += 1 # 29
-        if (Prediccion_SV[i] == 'neutro'  ): neu += 1 # 63                
-        if (Prediccion_SV[i] == 'negativo'): neg += 1 # 65
-        
+        Tamano = Prediccion_RF.size
+        for i in range(0, Tamano):
+            #miLog.Salidaln("--------------------------------")
+            #miLog.Salidaln("idTweet : " + m_DatosTwitter.Datos_Procesados.loc[i, "idtweet"])
+            #miLog.Salidaln("Texto   : " + m_DatosTwitter.Datos_Procesados.loc[i, "texto_original"])
+            #miLog.Salidaln("RF      :" + Prediccion_RF[i])
+            #miLog.Salidaln("NB      :" + Prediccion_NB[i])
+            Resultado = 'neutro'
+            
+            pos = 0
+            neg = 0
+            neu = 0
+            
+            
+            
+            if (Prediccion_RF[i] == 'positivo'): pos += 1 # 44
+            if (Prediccion_RF[i] == 'neutro'  ): neu += 1 # 70
+            if (Prediccion_RF[i] == 'negativo'): neg += 1 # 70
+            
+            if (Prediccion_PE[i] == 'positivo'): pos += 1 # 10
+            if (Prediccion_PE[i] == 'neutro'  ): neu += 1 # 70           
+            if (Prediccion_PE[i] == 'negativo'): neg += 1 # 70
                             
-        
-        Valor = max(pos,neu,neg)
-        if (Valor == pos): 
-            Resultado = 'positivo'
-        else:
-            if (Valor == neg): 
-                Resultado = 'negativo'
-            else: 
-                Resultado = 'neutro'
-        #miLog.Salidaln("----->  :" + Resultado)
-        
-        
-        GestorSQLServer.UpdateSentibelBusiness(m_DatosTwitter.Datos_Procesados.loc[i, "idtweet"],Resultado)
-
-        
-
-    miLog.Salidaln("OK ...")
+            #if (Prediccion_NB[i] == 'positivo'): pos += 1 # 10
+            #if (Prediccion_NB[i] == 'neutro'  ): neu += 1 # 67 
+            #if (Prediccion_NB[i] == 'negativo'): neg += 1 # 37        
+                        
+            if (Prediccion_SD[i] == 'positivo'): pos += 1 # 37
+            if (Prediccion_SD[i] == 'neutro'  ): neu += 1 # 55
+            if (Prediccion_SD[i] == 'negativo'): neg += 1 # 66
+            
+           
+            if (Prediccion_SV[i] == 'positivo'): pos += 1 # 29
+            if (Prediccion_SV[i] == 'neutro'  ): neu += 1 # 63                
+            if (Prediccion_SV[i] == 'negativo'): neg += 1 # 65
+            
+                                
+            
+            Valor = max(pos,neu,neg)
+            if (Valor == pos): 
+                Resultado = 'positivo'
+            else:
+                if (Valor == neg): 
+                    Resultado = 'negativo'
+                else: 
+                    Resultado = 'neutro'
+            #miLog.Salidaln("----->  :" + Resultado)
+            
+            
+            GestorSQLServer.UpdateSentibelBusiness(m_DatosTwitter.Datos_Procesados.loc[i, "idtweet"],Resultado)
+    
+            
+    
+        miLog.Salidaln("OK ...")
+    except:
+        miLog.Salidaln("No Hay datos ...")
     
     
     

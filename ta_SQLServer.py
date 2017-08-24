@@ -359,10 +359,11 @@ class SQLServer(object):
                     
                     ConsultaSQL = strSQL.encode('iso-8859-1','ignore').decode('utf-8','ignore')
                     self.m_conSQL.cursor().execute(ConsultaSQL)              
+                    
                     #self.m_conSQL.commit()
                     self.miLog.Salida(".")
                 except : 
-                      
+
                     strSQL = u"UPDATE [dbo].[timeline] SET "
                     strSQL = strSQL + "[Fecha] = '" + str(ts) + "', "
                     strSQL = strSQL + "[Retweet] = " + str(Elemento.m_reTweet) + ", "
